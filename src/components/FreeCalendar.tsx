@@ -16,6 +16,7 @@ import {
     getDaysInMonth,
     getFirstWeekDays,
 } from "../CalendarUtil";
+import { useResizeDetector } from "react-resize-detector";
 
 function getDayElementByDate(prevId: string | number, date: Date) {
     return document.getElementById(
@@ -80,7 +81,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
 }) => {
     // const _start = start || new Date(new Date().getFullYear(), new Date().getMonth(), 1)
     // const _end = end || getMonthLastDay(new Date())
-    const scrollRef = useRef<HTMLDivElement | null>(null);
+    const bodyRef = useRef<HTMLDivElement | null>(null);
     const scrollToDateRef = useRef<Date>(fixed?.date || start);
     const scrollTo = useCallback(
         (scrollToDate: Date | undefined, smooth: boolean) => {
@@ -135,7 +136,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
     }, [start, end]);
 
     const onScroll = () => {
-        if (scrollRef.current == null) return;
+        if (bodyRef.current == null) return;
         const candidate = [];
         for (let i = 0; i < firstDayIds.length; i++) {
             const el = document.querySelector(`#${firstDayIds[i]}`);
@@ -159,7 +160,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
 
     const wheelStepRef = useRef<number>(0);
     const onWheel = (e: WheelEvent) => {
-        if (scrollRef.current == null) return;
+        if (bodyRef.current == null) return;
         e.preventDefault();
         if (wheelStepRef.current < 2) {
             wheelStepRef.current++;
@@ -180,17 +181,21 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
         wheelStepRef.current = 0;
     };
 
+    const { width: bodyContentWidth } = useResizeDetector({
+        targetRef: bodyRef,
+    });
+
     useEffect(() => {
         if (wheelType == "row") {
-            scrollRef.current?.addEventListener("wheel", onWheel);
+            bodyRef.current?.addEventListener("wheel", onWheel);
         }
-        scrollRef.current?.addEventListener("scroll", onScroll);
+        bodyRef.current?.addEventListener("scroll", onScroll);
 
         return () => {
             if (wheelType == "row") {
-                scrollRef.current?.removeEventListener("wheel", onWheel);
+                bodyRef.current?.removeEventListener("wheel", onWheel);
             }
-            scrollRef.current?.removeEventListener("scroll", onScroll);
+            bodyRef.current?.removeEventListener("scroll", onScroll);
         };
     }, []);
 
@@ -202,14 +207,25 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
     const calendarHeaderMemo = useMemo(() => {
         return (
             <FreeCalendarHeader
-                headerStyle={headerStyle}
+                headerStyle={
+                    bodyContentWidth
+                        ? { width: bodyContentWidth, ...headerStyle }
+                        : headerStyle
+                }
                 start={start}
                 mondayIsFirstAtWeek={mondayIsFirstAtWeek}
                 showBorder={showBorder}
                 weekNameFormat={weekNameFormat}
             />
         );
-    }, [headerStyle, start, mondayIsFirstAtWeek, showBorder, weekNameFormat]);
+    }, [
+        headerStyle,
+        start,
+        mondayIsFirstAtWeek,
+        showBorder,
+        weekNameFormat,
+        bodyContentWidth,
+    ]);
 
     const _datesWrapper: (
         children: React.ReactNode,
@@ -217,7 +233,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
     ) => React.ReactNode | JSX.Element =
         datesWrapper == undefined
             ? (children) => (
-                  <div ref={scrollRef} style={{ overflow: "auto" }}>
+                  <div ref={bodyRef} style={{ overflow: "auto" }}>
                       {children}
                   </div>
               )
@@ -236,7 +252,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
                 DateDataContent={DateDataContent}
                 fixed={fixed}
             />,
-            scrollRef,
+            bodyRef,
         );
     }, [
         start,
