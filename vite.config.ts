@@ -15,13 +15,13 @@ const globals = {
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        react(), 
+        react(),
         dts({
             beforeWriteFile: (filePath, content) => {
-                writeFileSync(filePath.replace('.d.ts', '.d.cts'), content) 
-                return { filePath, content }
-              },
-        })
+                writeFileSync(filePath.replace(".d.ts", ".d.cts"), content);
+                return { filePath, content };
+            },
+        }),
     ],
 
     build: {
