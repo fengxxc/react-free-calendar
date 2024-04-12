@@ -1,4 +1,3 @@
-
 export function getDates(startDate: Date, endDate: Date) {
     var dateArray = [];
     var currentDate = new Date(startDate);
@@ -66,7 +65,7 @@ export function leftPaddingDate(date: Date, mondayIsFirstAtWeek: boolean) {
 }
 
 /**
- * date所在月份有多少天 
+ * date所在月份有多少天
  * */
 export function getDaysInMonth(date: Date) {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -74,26 +73,26 @@ export function getDaysInMonth(date: Date) {
 
 /**
  *  获取year年第一个从周一至周日
- * @param year 
+ * @param year
  * @param mondayIsFirstAtWeek 周一是一周的开始吗
  */
 export function getFirstWeekDays(year: number, mondayIsFirstAtWeek: boolean) {
     const d = new Date(year, 0, 7);
-    let index = d.getDay()
-    index = index == 0 ? 7 : index
-    index = mondayIsFirstAtWeek ? index - 1 : index
-    const prevDate = []
-    const nextDate = []
+    let index = d.getDay();
+    index = index == 0 ? 7 : index;
+    index = mondayIsFirstAtWeek ? index - 1 : index;
+    const prevDate = [];
+    const nextDate = [];
     for (let i = 0; i < index; i++) {
-        prevDate.push(new Date(year, 0, d.getDate() - (index - i)))
+        prevDate.push(new Date(year, 0, d.getDate() - (index - i)));
     }
     if (prevDate.length == 7) {
-        return prevDate
+        return prevDate;
     }
     for (let j = 0; j < 7 - index - 1; j++) {
-        nextDate.push(new Date(year, 0, d.getDate() + j + 1))
+        nextDate.push(new Date(year, 0, d.getDate() + j + 1));
     }
-    return [...prevDate, d, ...nextDate]
+    return [...prevDate, d, ...nextDate];
 }
 
 /* function getSeconds(timestamp: string) {
@@ -106,8 +105,8 @@ export function getFirstWeekDays(year: number, mondayIsFirstAtWeek: boolean) {
 } */
 
 export function getSecondsByYoutubeUrl(url: string) {
-    const reg = /t=(\d+)/
-    const result = url.match(reg)
-    if (result == null) return 0
-    return parseInt(result[1])
+    const reg = /t=(\d+)/;
+    const result = url.match(reg);
+    if (result == null) return 0;
+    return parseInt(result[1]);
 }

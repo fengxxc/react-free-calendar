@@ -12,7 +12,15 @@ interface OneProps extends Cell {
     id?: string;
     children?: React.ReactNode;
 }
-export const One: React.FC<OneProps> = ({ id, children, height, topBorder, rightBorder, bottomBorder, leftBorder }) => {
+export const One: React.FC<OneProps> = ({
+    id,
+    children,
+    height,
+    topBorder,
+    rightBorder,
+    bottomBorder,
+    leftBorder,
+}) => {
     return (
         <div
             id={id || ""}
@@ -46,18 +54,45 @@ interface OneDayProps extends Cell {
     weekNumber?: number;
     weekNumberWrapper?: (weekNumber: number) => React.ReactNode;
 }
-export const OneDay: React.FC<PropsWithChildren<OneDayProps>> = ({ children, calendarId, date, showContent = true/* , datas */, firstDayAtWeek, weekNumber, weekNumberWrapper, height, topBorder, rightBorder, bottomBorder, leftBorder }) => {
-    weekNumberWrapper = weekNumberWrapper || (weekNumber => <span style={{color: "gray", fontSize: "0.75rem", position: "absolute", left: "1px"}}>{weekNumber}</span>);
+export const OneDay: React.FC<PropsWithChildren<OneDayProps>> = ({
+    children,
+    calendarId,
+    date,
+    showContent = true /* , datas */,
+    firstDayAtWeek,
+    weekNumber,
+    weekNumberWrapper,
+    height,
+    topBorder,
+    rightBorder,
+    bottomBorder,
+    leftBorder,
+}) => {
+    weekNumberWrapper =
+        weekNumberWrapper ||
+        ((weekNumber) => (
+            <span
+                style={{
+                    color: "gray",
+                    fontSize: "0.75rem",
+                    position: "absolute",
+                    left: "1px",
+                }}
+            >
+                {weekNumber}
+            </span>
+        ));
     return (
-        <One height={height} topBorder={topBorder} rightBorder={rightBorder} bottomBorder={bottomBorder} leftBorder={leftBorder}
+        <One
+            height={height}
+            topBorder={topBorder}
+            rightBorder={rightBorder}
+            bottomBorder={bottomBorder}
+            leftBorder={leftBorder}
             id={`${calendarId}_calendar_${formatDate(date)}`}
         >
-            {firstDayAtWeek && weekNumber &&
-                weekNumberWrapper(weekNumber)
-            }
-            {showContent &&
-                children
-            }
+            {firstDayAtWeek && weekNumber && weekNumberWrapper(weekNumber)}
+            {showContent && children}
         </One>
     );
 };

@@ -4,7 +4,4 @@ import * as CalendarUtil from "./CalendarUtil.js";
 
 export default FreeCalendar;
 
-export { 
-    SimpleOneDayContent,
-    CalendarUtil
-};
+export { SimpleOneDayContent, CalendarUtil };
