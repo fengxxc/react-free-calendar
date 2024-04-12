@@ -26,7 +26,7 @@ function getDayElementByDate(prevId: string | number, date: Date) {
 
 export type WheelTypeType = "native" | "row";
 
-export interface DateDataContentProps {
+export interface DateContentProps {
     date: Date;
     active: boolean;
     // render: (date: Date, data: DateData) => React.ReactNode;
@@ -37,7 +37,7 @@ interface FreeCalendarProps {
     start: Date;
     end: Date;
     mondayIsFirstAtWeek: boolean;
-    DateDataContent: React.FC<DateDataContentProps>;
+    DateContent: React.FC<DateContentProps>;
     weekNumberWrapper?: (weekNumber: number) => React.ReactNode;
     fixed?: { date: Date; smooth: boolean };
     showMonthTags?: boolean;
@@ -63,7 +63,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
     start,
     end,
     mondayIsFirstAtWeek = true,
-    DateDataContent,
+    DateContent,
     showMonthTags = true,
     headerStyle,
     showBorder = true,
@@ -249,7 +249,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
                 mondayIsFirstAtWeek={mondayIsFirstAtWeek}
                 showWeekNumber={showWeekNumber}
                 weekNumberWrapper={weekNumberWrapper}
-                DateDataContent={DateDataContent}
+                DateContent={DateContent}
                 fixed={fixed}
             />,
             bodyRef,
@@ -263,7 +263,7 @@ export const FreeCalendar: React.FC<FreeCalendarProps> = ({
         mondayIsFirstAtWeek,
         showWeekNumber,
         weekNumberWrapper,
-        DateDataContent,
+        DateContent,
         fixed,
     ]);
 
@@ -312,7 +312,7 @@ interface FreeCalendarBodyProps {
     start: Date;
     end: Date;
     mondayIsFirstAtWeek: boolean;
-    DateDataContent: React.FC<DateDataContentProps>;
+    DateContent: React.FC<DateContentProps>;
     weekNumberWrapper?: (weekNumber: number) => React.ReactNode;
     fixed?: { date: Date; smooth: boolean };
     height: string;
@@ -328,7 +328,7 @@ const FreeCalendarBody: React.FC<FreeCalendarBodyProps> = ({
     mondayIsFirstAtWeek,
     showWeekNumber,
     weekNumberWrapper,
-    DateDataContent,
+    DateContent: DateContent,
     fixed,
 }) => {
     const leftDates = leftPaddingDate(start, mondayIsFirstAtWeek);
@@ -378,7 +378,7 @@ const FreeCalendarBody: React.FC<FreeCalendarBodyProps> = ({
                     }
                     weekNumberWrapper={weekNumberWrapper}
                 >
-                    <DateDataContent
+                    <DateContent
                         date={date}
                         active={Boolean(
                             fixed &&
