@@ -42,9 +42,9 @@
                 "import": "./dist/index.js",
                 "require": "./dist/index.cjs"
             }
-        }
+        },
+        "registry": "https://registry.npmjs.org/"
     },
-    "registry": "https://registry.npmjs.org/",
     "typesVersions": {
         "*": {
             "*": [
