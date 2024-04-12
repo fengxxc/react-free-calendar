@@ -17,19 +17,12 @@ import {
     getFirstWeekDays,
 } from "../CalendarUtil";
 import { useResizeDetector } from "react-resize-detector";
+import { DateContentProps, WheelTypeType } from "./ExportTypes";
 
 function getDayElementByDate(prevId: string | number, date: Date) {
     return document.getElementById(
         `${prevId}_calendar_${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
     );
-}
-
-export type WheelTypeType = "native" | "row";
-
-export interface DateContentProps {
-    date: Date;
-    active: boolean;
-    // render: (date: Date, data: DateData) => React.ReactNode;
 }
 
 interface FreeCalendarProps {
@@ -58,7 +51,7 @@ interface FreeCalendarProps {
     monthTagColor?: string;
     monthTagActiveColor?: string;
 }
-export const FreeCalendar: React.FC<FreeCalendarProps> = ({
+const FreeCalendar: React.FC<FreeCalendarProps> = ({
     id,
     start,
     end,
