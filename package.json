@@ -1,20 +1,31 @@
 {
 	"name": "react-free-calendar",
-	"version": "0.0.0",
-    "description": "A react calendar component. basal, hight customization and no style.",
-    "keywords": ["react", "react-dom", "calendar", "year", "month", "date", "day", "week", "component", "customization"],
-    "homepage": "https://github.com/fengxxc/react-free-calendar",
-    "author": "fengxxc",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/fengxxc/react-free-calendar"
-    },
-    "files": [
-        "dist",
-        "README.md",
-        "LICENSE"
-    ],
+	"version": "0.1.0",
+	"description": "A react calendar component. basal, hight customization and no style.",
+	"keywords": [
+		"react",
+		"react-dom",
+		"calendar",
+		"year",
+		"month",
+		"date",
+		"day",
+		"week",
+		"component",
+		"customization"
+	],
+	"homepage": "https://github.com/fengxxc/react-free-calendar",
+	"author": "fengxxc",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fengxxc/react-free-calendar"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
 	"type": "module",
 	"main": "dist/index.cjs",
 	"exports": {
@@ -32,7 +43,7 @@
 				"require": "./dist/index.cjs"
 			}
 		},
-        "registry": "https://registry.npmjs.org/"
+		"registry": "https://registry.npmjs.org/"
 	},
 	"typesVersions": {
 		"*": {
@@ -48,7 +59,7 @@
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
-        "test": "echo \"No test specified\""
+		"test": "echo \"No test specified\""
 	},
 	"dependencies": {
 		"react": "^18.2.0",
