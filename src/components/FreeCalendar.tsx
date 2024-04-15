@@ -16,7 +16,6 @@ import {
     getDaysInMonth,
     getFirstWeekDays,
 } from "../CalendarUtil";
-import { useResizeDetector } from "react-resize-detector";
 import { DateContentProps, WheelTypeType } from "./ExportTypes";
 
 function getDayElementByDate(prevId: string | number, date: Date) {
@@ -42,7 +41,7 @@ interface FreeCalendarProps {
     weekNameFormat: (date: Date) => string | JSX.Element;
     datesWrapper?: (
         children: React.ReactNode,
-        ref: React.MutableRefObject<HTMLElement | null>,
+        ref: React.Ref<HTMLDivElement> | undefined,
     ) => React.ReactNode | JSX.Element;
     monthTagNameFormat?: (date: Date) => string | JSX.Element;
     monthTagsWrapper?: (
@@ -174,9 +173,11 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
         wheelStepRef.current = 0;
     };
 
-    const { width: bodyContentWidth } = useResizeDetector({
-        targetRef: bodyRef,
-    });
+    const [bodyContentWidth, setBodyContentWidth] = useState<number>()
+    useEffect(() => {
+        if (bodyRef.current == null) return;
+        setBodyContentWidth(bodyRef.current.clientWidth)
+    }, [bodyRef, start, end, viewRows])
 
     useEffect(() => {
         if (wheelType == "row") {
@@ -222,11 +223,11 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
 
     const _datesWrapper: (
         children: React.ReactNode,
-        ref: React.MutableRefObject<HTMLElement | null>,
+        ref: React.Ref<HTMLDivElement> | undefined,
     ) => React.ReactNode | JSX.Element =
         datesWrapper == undefined
-            ? (children) => (
-                  <div ref={bodyRef} style={{ overflow: "auto" }}>
+            ? (children, ref) => (
+                  <div ref={ref} style={{ overflow: "auto" }}>
                       {children}
                   </div>
               )
