@@ -60,7 +60,7 @@
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview",
         "test": "echo \"No test specified\"",
-        "publish": "build && np"
+        "publish": "tsc && vite build && np"
     },
     "dependencies": {
         "react": "^18.2.0",
