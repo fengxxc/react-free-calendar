@@ -173,11 +173,13 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
         wheelStepRef.current = 0;
     };
 
-    const [bodyContentWidth, setBodyContentWidth] = useState<number>()
+    const [headerPaddingRight, setHeaderPaddingRight] = useState<number>();
     useEffect(() => {
         if (bodyRef.current == null) return;
-        setBodyContentWidth(bodyRef.current.clientWidth)
-    }, [bodyRef, start, end, viewRows])
+        const rightPadding =
+            bodyRef.current.offsetWidth - bodyRef.current.clientWidth;
+        setHeaderPaddingRight(rightPadding);
+    }, [bodyRef, start, end, viewRows]);
 
     useEffect(() => {
         if (wheelType == "row") {
@@ -202,8 +204,8 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
         return (
             <FreeCalendarHeader
                 headerStyle={
-                    bodyContentWidth
-                        ? { width: bodyContentWidth, ...headerStyle }
+                    headerPaddingRight
+                        ? { paddingRight: headerPaddingRight, ...headerStyle }
                         : headerStyle
                 }
                 start={start}
@@ -218,7 +220,7 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
         mondayIsFirstAtWeek,
         showBorder,
         weekNameFormat,
-        bodyContentWidth,
+        headerPaddingRight,
     ]);
 
     const _datesWrapper: (
