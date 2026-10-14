@@ -1,6 +1,7 @@
 {
     "name": "react-free-calendar",
     "version": "0.3.0",
+    "packageManager": "pnpm@10.34.7",
     "description": "A react calendar component. basal, hight customization and no style.",
     "keywords": [
         "react",
