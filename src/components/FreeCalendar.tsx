@@ -49,6 +49,7 @@ interface FreeCalendarProps {
     ) => React.ReactNode | JSX.Element;
     monthTagColor?: string;
     monthTagActiveColor?: string;
+    onMonthChange?: (year: number, month: number ) => void;
 }
 const FreeCalendar: React.FC<FreeCalendarProps> = ({
     id,
@@ -70,6 +71,7 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
     monthTagsWrapper,
     monthTagColor,
     monthTagActiveColor,
+    onMonthChange,
 }) => {
     // const _start = start || new Date(new Date().getFullYear(), new Date().getMonth(), 1)
     // const _end = end || getMonthLastDay(new Date())
@@ -148,6 +150,7 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
             candidate.length > 0 ? candidate[candidate.length - 1] : null;
         if (currentScrollDate == null) return;
         setCurrentScrollMonth(currentScrollDate.getMonth() + 1);
+        onMonthChange?.(currentScrollDate.getFullYear(), currentScrollDate.getMonth() + 1 );
     };
 
     const wheelStepRef = useRef<number>(0);
