@@ -19,7 +19,7 @@ function App() {
                 style={{
                     textAlign: "left",
                     height: "100%",
-                    width: "95%",
+                    width: "100%",
                     display: "flex",
                     flexDirection: "column",
                 }}

@@ -294,6 +294,8 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
                     width: "100%",
                     display: "flex",
                     flexDirection: "column",
+                    flex: 1,
+                    minWidth: 0,
                     height: "100%",
                 }}
             >
