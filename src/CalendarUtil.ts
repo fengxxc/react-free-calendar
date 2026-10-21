@@ -17,6 +17,22 @@ export function getMonthLastDay(date: Date) {
     return lastDay;
 }
 
+/**
+ * 两个日期相差的天数（date2 - date1），忽略时分秒与夏令时影响
+ */
+export function diffDays(date1: Date, date2: Date) {
+    const d1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const d2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    return Math.round((d2 - d1) / 86400000);
+}
+
+/**
+ * date 加上 days 天后的新日期（不修改原对象）
+ */
+export function addDays(date: Date, days: number) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+}
+
 export function formatDate(date: Date) {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }

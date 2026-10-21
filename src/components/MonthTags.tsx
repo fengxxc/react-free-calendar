@@ -6,7 +6,7 @@ function genMonthsSeries(start: Date, end: Date) {
     const endMonth = end.getMonth();
     for (let year = startYear; year <= endYear; year++) {
         for (
-            let month = startMonth;
+            let month = year === startYear ? startMonth : 0;
             month <= (year === endYear ? endMonth : 11);
             month++
         ) {
@@ -24,6 +24,7 @@ interface MonthTagsProps {
     start: Date;
     end: Date;
     activeMonth: number; // from 1 to 12
+    activeYear?: number;
     monthTagNameFormat?: (date: Date) => string | JSX.Element;
     color?: string;
     activeColor?: string;
@@ -33,13 +34,17 @@ const MonthTags: React.FC<MonthTagsProps> = ({
     start,
     end,
     activeMonth,
+    activeYear,
     monthTagNameFormat,
     color = "#777",
     activeColor = "#000",
     onClick,
 }) => {
-    const isActive = (index: number) => {
-        return index + 1 == activeMonth;
+    const isActive = (yearMonth: { year: number; month: number }) => {
+        return (
+            yearMonth.month == activeMonth &&
+            (activeYear == undefined || yearMonth.year == activeYear)
+        );
     };
     return (
         <>
@@ -47,10 +52,10 @@ const MonthTags: React.FC<MonthTagsProps> = ({
                 <button
                     key={index}
                     style={{
-                        color: isActive(index) ? activeColor : color,
+                        color: isActive(yearMonth) ? activeColor : color,
                         display: "block",
                         textAlign: "right",
-                        fontWeight: isActive(index) ? "bold" : "normal",
+                        fontWeight: isActive(yearMonth) ? "bold" : "normal",
                         minWidth: "60px",
                         textTransform: "none",
                         border: "none",
