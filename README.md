@@ -6,6 +6,8 @@ Bring your own styles — the library provides structure and logic only.
 [![npm version](https://img.shields.io/npm/v/react-free-calendar)](https://www.npmjs.com/package/react-free-calendar)
 [![license](https://img.shields.io/npm/l/react-free-calendar)](./LICENSE)
 
+🌐 **Live Demo:** [https://fengxxc.github.io/react-free-calendar/](https://fengxxc.github.io/react-free-calendar/)
+
 ---
 
 ## Features
