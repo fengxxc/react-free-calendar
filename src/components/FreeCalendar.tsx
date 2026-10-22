@@ -194,7 +194,8 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
     scrollToRef.current = scrollTo;
     useEffect(() => {
         if (bodyEl == null || fixed?.date == undefined) return;
-        scrollToRef.current(fixed.date, smooth);
+        const firstDayOfMonth = new Date(fixed.date.getFullYear(), fixed.date.getMonth(), 1);
+        scrollToRef.current(firstDayOfMonth, smooth);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [bodyEl, fixed]);
 
