@@ -1,10 +1,62 @@
 import { useState, useMemo } from "react";
 import "./App.css";
 import FreeCalendar, {
-    SimpleOneDayContent,
     CalendarUtil,
     WheelTypeType,
 } from "react-free-calendar";
+
+interface Item {
+    id: string;
+    time: string;
+    content: string;
+}
+
+interface AwesomeDateContentProps {
+    date: Date;
+    color: string;
+    backgroundColor: string;
+    showMonthAtFirstOfMonth?: boolean;
+    onClick?: (date: Date) => void;
+    datas: Item[];
+}
+
+const AwesomeDateContent: React.FC<AwesomeDateContentProps> = ({
+    date,
+    color,
+    backgroundColor,
+    showMonthAtFirstOfMonth,
+    onClick,
+    datas,
+}) => {
+    return (
+        <div className="calendar-date-wrapper">
+            <div
+                className="calendar-date"
+                style={{ backgroundColor, color }}
+                onClick={() => onClick && onClick(date)}
+            >
+                {date.getDate() === 1 && showMonthAtFirstOfMonth && (
+                    <>
+                        <strong>{date.getMonth() + 1}</strong>
+                        <span>/</span>
+                    </>
+                )}
+                {date.getDate()}
+            </div>
+
+            <ul className="calendar-date-content scrollbar">
+                {datas.map((item) => (
+                    <li key={item.id} className="url-item">
+                        <span className="url-item__time">
+                            {new Date(item.time).toLocaleTimeString()}
+                        </span>
+                        {item.content}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 function App() {
     const [year, setYear] = useState<number>(new Date().getFullYear());
@@ -19,6 +71,21 @@ function App() {
     const [showWeekNumber, setShowWeekNumber] = useState<boolean>(true);
     const [viewRows, setViewRows] = useState<number>(5);
     const [wheelType, setWheelType] = useState<WheelTypeType>("row");
+    const [datasMap, setDatasMap] = useState<Record<string, Item[]>>({
+        "2026-10-1": [
+            { id: "1", time: "2026-10-01 00:00", content: "Event 1" },
+            { id: "2", time: "2026-10-01 14:00", content: "Event 2" },
+            { id: "3", time: "2026-10-01 09:00", content: "Event 3" },
+            { id: "4", time: "2026-10-01 16:00", content: "Event 4" },
+            { id: "7", time: "2026-10-01 18:00", content: "Event 5" },
+        ],
+        "2026-10-2": [
+            { id: "5", time: "2026-10-02 11:00", content: "Event 6" },
+        ],
+        "2026-10-3": [
+            { id: "6", time: "2026-10-03 15:00", content: "Event 7" },
+        ],
+    });
     return (
         <>
             <div
@@ -38,7 +105,7 @@ function App() {
                             new Date(year, endMonth - 1, 1),
                         )}
                         DateContent={({ date, active }) => (
-                            <SimpleOneDayContent
+                            <AwesomeDateContent
                                 date={date}
                                 color={
                                     active || CalendarUtil.isToday(date)
@@ -53,6 +120,7 @@ function App() {
                                             : "inherit"
                                 }
                                 showMonthAtFirstOfMonth={true}
+                                datas={datasMap[CalendarUtil.formatDate(date)] || []}
                                 onClick={
                                     (/* date: Date */) => {
                                         // onClick(date)
