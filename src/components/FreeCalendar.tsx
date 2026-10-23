@@ -35,6 +35,38 @@ const SNAP_IDLE_DELAY = 150;
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
+/**
+ * 事件是否发生在「容器内部某个还能继续滚动的可滚动元素」中。
+ * DateContent 里常见自带 overflow:auto 的列表；
+ * 行步进模式下如果无条件 preventDefault，这些内部滚动条就滚不动了。
+ */
+const isInnerScrollable = (
+    target: EventTarget | null,
+    container: HTMLElement,
+    delta: number,
+) => {
+    let node: HTMLElement | null =
+        target instanceof Element ? (target as HTMLElement) : null;
+    while (node != null && node !== container && container.contains(node)) {
+        const style = getComputedStyle(node);
+        const overflowY = style.overflowY;
+        const scrollable =
+            (overflowY === "auto" ||
+                overflowY === "scroll" ||
+                overflowY === "overlay") &&
+            node.scrollHeight > node.clientHeight + 1;
+        if (scrollable) {
+            const max = node.scrollHeight - node.clientHeight;
+            // 还没滚到尽头 → 交给内部元素自己消费这次滚轮
+            if (delta < 0 ? node.scrollTop > 0 : node.scrollTop < max - 1) {
+                return true;
+            }
+        }
+        node = node.parentElement;
+    }
+    return false;
+};
+
 interface FreeCalendarProps {
     id: string | number;
     start: Date;
@@ -238,7 +270,7 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
         if (bodyEl == null || wheelType !== "row") return;
         const onWheel = (e: WheelEvent) => {
             if (e.ctrlKey) return; // 缩放手势交还浏览器
-            e.preventDefault();
+            if (e.defaultPrevented) return; // DateContent 已自行处理
             const rowHeight = rowHeightOf(bodyEl);
             if (!rowHeight) return;
             // 归一化不同 deltaMode 到像素
@@ -249,6 +281,9 @@ const FreeCalendar: React.FC<FreeCalendarProps> = ({
                       ? e.deltaY * bodyEl.clientHeight
                       : e.deltaY;
             if (delta === 0) return;
+            // 滚轮发生在 DateContent 内部仍可滚动的区域里：放行，不做行步进
+            if (isInnerScrollable(e.target, bodyEl, delta)) return;
+            e.preventDefault();
             const now = performance.now();
             const direction = Math.sign(delta);
             // 反向滚动时丢弃旧累积量与冷却，保证立即响应
