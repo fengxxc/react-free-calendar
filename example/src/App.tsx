@@ -71,7 +71,7 @@ function App() {
     const [showWeekNumber, setShowWeekNumber] = useState<boolean>(true);
     const [viewRows, setViewRows] = useState<number>(5);
     const [wheelType, setWheelType] = useState<WheelTypeType>("row");
-    const [datasMap, setDatasMap] = useState<Record<string, Item[]>>({
+    const [datasMap] = useState<Record<string, Item[]>>({
         "2026-10-1": [
             { id: "1", time: "2026-10-01 00:00", content: "Event 1" },
             { id: "2", time: "2026-10-01 14:00", content: "Event 2" },
